@@ -50,6 +50,17 @@ button {
   cursor: pointer;
 }
 
+.warning {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  transition: color 0.3s;
+}
+
+.warning.danger {
+  color: #a00;
+}
+
 .error {
   color: #a00;
   margin-top: 10px;
@@ -94,48 +105,4 @@ button {
 <!-- PASSORD -->
 <div class="screen hidden" id="lock">
   <h1>TILGANG NEKTET</h1>
-  <p>Skriv inn passordet. Husk: Du har ikke veldig mange førsøk... </p>
-  <input type="password" id="password" placeholder="Passord">
-  <br>
-  <button onclick="check()">BEKREFT</button>
-  <div class="error" id="error"></div>
-</div>
-
-<script>
-let attempts = 0;
-
-setTimeout(() => {
-  fake404.classList.add("hidden");
-  system.classList.remove("hidden");
-}, 2500);
-
-setTimeout(() => {
-  system.classList.add("hidden");
-  lock.classList.remove("hidden");
-  document.title = "Adgang sperret";
-}, 5000);
-
-function check() {
-  const val = password.value.toLowerCase();
-  attempts++;
-  lock.classList.add("shake");
-  setTimeout(()=>lock.classList.remove("shake"),300);
-
-  if (val === "treplanke") {
-    lock.innerHTML = `
-      <h1>…</h1>
-      <p>Riktig passord. Tilgang innvilges.</p>
-      <div class="solution">KJELLER</div>
-    `;
-    document.title = "Åpnet";
-  } else {
-    error.textContent =
-      attempts >= 3
-      ? "Systemet overvåker deg."
-      : "Feil passord.";
-  }
-}
-</script>
-
-</body>
-</html>
+  <p class="warning" id="warningT
