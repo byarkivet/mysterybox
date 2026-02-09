@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adgang krever passord</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #111, #000);
+      color: #e0e0e0;
+      font-family: "Georgia", serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 90%;
+      padding: 30px;
+      border: 1px solid #333;
+      box-shadow: 0 0 25px rgba(0,0,0,0.9);
+      background-color: rgba(10,10,10,0.85);
+    }
+
+    h1 {
+      font-weight: normal;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 1rem;
+      opacity: 0.85;
+    }
+
+    input {
+      margin-top: 15px;
+      padding: 10px;
+      width: 80%;
+      max-width: 250px;
+      background: #000;
+      border: 1px solid #555;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #111;
+      border: 1px solid #666;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #222;
+    }
+
+    .error {
+      color: #a33;
+      margin-top: 10px;
+    }
+
+    .solution {
+      font-size: 2rem;
+      letter-spacing: 4px;
+      margin-top: 20px;
+      color: #cfcfcf;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="box">
+    <h1>Låst</h1>
+    <p>Skriv inn passordet for å avdekke det som skjuler seg.</p>
+
+    <input type="password" id="password" placeholder="Passord" />
+    <br />
+    <button onclick="checkPassword()">Åpne</button>
+
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("password").value.toLowerCase();
+      const error = document.getElementById("error");
+      const box = document.getElementById("box");
+
+      if (input === "treplanke") {
+        box.innerHTML = `
+          <h1>Åpnet</h1>
+          <p>Løsningsordet er:</p>
+          <div class="solution">KJELLER</div>
+        `;
+      } else {
+        error.textContent = "Feil passord. Noe stemmer ikke…";
+      }
+    }
+  </script>
+</body>
+</html>
