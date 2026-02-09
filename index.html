@@ -3,36 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adgang krever passord</title>
+  <title>Feil</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: radial-gradient(circle at top, #111, #000);
-      color: #e0e0e0;
-      font-family: "Georgia", serif;
+      background: black;
+      color: #ccc;
+      font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
-    .container {
+    .screen {
       text-align: center;
+      padding: 20px;
       max-width: 90%;
-      padding: 30px;
-      border: 1px solid #333;
-      box-shadow: 0 0 25px rgba(0,0,0,0.9);
-      background-color: rgba(10,10,10,0.85);
     }
 
-    h1 {
-      font-weight: normal;
-      letter-spacing: 2px;
+    .glitch {
+      font-size: 1.2rem;
+      animation: flicker 0.15s infinite;
     }
 
-    p {
-      font-size: 1rem;
-      opacity: 0.85;
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .hidden {
+      display: none;
     }
 
     input {
@@ -53,11 +56,6 @@
       border: 1px solid #666;
       color: #fff;
       cursor: pointer;
-      font-size: 1rem;
-    }
-
-    button:hover {
-      background: #222;
     }
 
     .error {
@@ -69,14 +67,24 @@
       font-size: 2rem;
       letter-spacing: 4px;
       margin-top: 20px;
-      color: #cfcfcf;
+      color: #eee;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="box">
+
+  <!-- ØDELAGT SKJERM -->
+  <div class="screen" id="broken">
+    <div class="glitch">SYSTEMFEIL 0x00013</div>
+    <p>Kan ikke laste inn innhold.</p>
+    <p>Datakorrupsjon oppdaget…</p>
+    <p>Forsøker gjenoppretting…</p>
+  </div>
+
+  <!-- EKTE INNHOLD -->
+  <div class="screen hidden" id="real">
     <h1>Låst</h1>
-    <p>Skriv inn passordet for å avdekke det som skjuler seg.</p>
+    <p>Skriv inn passordet.</p>
 
     <input type="password" id="password" placeholder="Passord" />
     <br />
@@ -86,21 +94,29 @@
   </div>
 
   <script>
+    // Fake reparasjon
+    setTimeout(() => {
+      document.getElementById("broken").classList.add("hidden");
+      document.getElementById("real").classList.remove("hidden");
+      document.title = "Adgang krever passord";
+    }, 4000);
+
     function checkPassword() {
       const input = document.getElementById("password").value.toLowerCase();
       const error = document.getElementById("error");
-      const box = document.getElementById("box");
+      const real = document.getElementById("real");
 
       if (input === "treplanke") {
-        box.innerHTML = `
-          <h1>Åpnet</h1>
-          <p>Løsningsordet er:</p>
+        real.innerHTML = `
+          <h1>Tilgang gitt</h1>
+          <p>Løsningsord:</p>
           <div class="solution">KJELLER</div>
         `;
       } else {
-        error.textContent = "Feil passord. Noe stemmer ikke…";
+        error.textContent = "Feil passord. Systemet avviser deg.";
       }
     }
   </script>
+
 </body>
 </html>
