@@ -105,4 +105,54 @@ button {
 <!-- PASSORD -->
 <div class="screen hidden" id="lock">
   <h1>TILGANG NEKTET</h1>
-  <p class="warning" id="warningT
+  <p class="warning" id="warningText">
+    Du har ikke veldig mange forsøk …
+  </p>
+  <p>Skriv inn passordet.</p>
+
+  <input type="password" id="password" placeholder="Passord">
+  <br>
+  <button onclick="check()">BEKREFT</button>
+
+  <div class="error" id="error"></div>
+</div>
+
+<script>
+let attempts = 0;
+
+setTimeout(() => {
+  fake404.classList.add("hidden");
+  system.classList.remove("hidden");
+}, 2500);
+
+setTimeout(() => {
+  system.classList.add("hidden");
+  lock.classList.remove("hidden");
+  document.title = "Adgang sperret";
+}, 5000);
+
+function check() {
+  const val = password.value.toLowerCase();
+  attempts++;
+  lock.classList.add("shake");
+  setTimeout(()=>lock.classList.remove("shake"),300);
+
+  if (val === "treplanke") {
+    lock.innerHTML = `
+      <h1>…</h1>
+      <p>Tilgang innvilges.</p>
+      <div class="solution">KJELLER</div>
+    `;
+    document.title = "Åpnet";
+  } else {
+    document.getElementById("warningText").classList.add("danger");
+    error.textContent =
+      attempts >= 3
+      ? "Systemet overvåker deg."
+      : "Feil passord.";
+  }
+}
+</script>
+
+</body>
+</html>
