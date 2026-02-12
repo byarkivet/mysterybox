@@ -6,7 +6,8 @@
 <style>
     body {
         background-color: black;
-        font-family: Arial, sans-serif;
+        color: white;
+        font-family: "Times New Roman", serif;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -15,15 +16,35 @@
         text-align: center;
     }
 
-    input {
-        font-size: 18px;
-        padding: 8px;
-        border: 1px white;
-        outline: none;
+    .container {
+        max-width: 700px;
     }
 
     h1 {
         font-weight: normal;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .sak {
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+
+    p {
+        line-height: 1.6;
+        margin: 20px 0;
+    }
+
+    input {
+        background: black;
+        color: white;
+        font-size: 18px;
+        padding: 8px;
+        border: 1px solid white;
+        outline: none;
+        text-align: center;
+        margin-top: 30px;
     }
 </style>
 </head>
@@ -32,42 +53,55 @@
 <div id="innhold"></div>
 
 <script>
-    const riktigPassord = "personlig";
+const riktigPassord = "personlig";
 
-    function visSkjerm() {
-        if (localStorage.getItem("tilgang") === "ja") {
-            document.getElementById("innhold").innerHTML = `
-                <div>
-                    <h1>Akrivnotat</h1>
-                    <p>
-                    Dokumentet ble feilarkivert. Arkivet gjelder ikke innhold, 
-                    men plassering. Dokumenter av personlig karakter kan ikke 
-                    behandles uten avstand. Videre materiale er frigitt. 
-                    </p>
-                     <p>
-                    - Arkivar X.
-                    </p>
-                </div>
-            `;
-        } else {
-            document.getElementById("innhold").innerHTML = `
+function visSkjerm() {
+    if (localStorage.getItem("tilgang") === "ja") {
+        document.getElementById("innhold").innerHTML = `
+            <div class="container">
+                <h1>Akrivnotat</h1>
+                <p>
+                Dokumentet ble feilarkivert. Arkivet gjelder ikke innhold, 
+                men plassering. Dokumenter av personlig karakter kan ikke 
+                behandles uten avstand. Videre materiale er frigitt.
+                </p>
+                <p>- Arkivar X.</p>
+            </div>
+        `;
+    } else {
+        document.getElementById("innhold").innerHTML = `
+            <div class="container">
+                <h1>ARKIVREGISTER OSLO BYARKIV</h1>
+                <div class="sak">Sak 30/OSL</div>
+
+                <p>Tilgang til dette materialet er begrenset.</p>
+
+                <p>
+                Dokumentet ble vurdert etter korrekt prosedyre, 
+                men aldri korrekt plassert. Korrekt klassifisering 
+                kreves for videre innsyn.
+                </p>
+
                 <input type="password" id="passord" autofocus>
-            `;
+            </div>
+        `;
 
-            document.getElementById("passord").addEventListener("keypress", function(e) {
-                if (e.key === "Enter") {
-                    if (this.value === riktigPassord) {
-                        localStorage.setItem("tilgang", "ja");
-                        location.reload();
-                    } else {
-                        this.value = "";
-                    }
+        const input = document.getElementById("passord");
+
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                if (this.value === riktigPassord) {
+                    localStorage.setItem("tilgang", "ja");
+                    location.reload();
+                } else {
+                    this.value = "";
                 }
-            });
-        }
+            }
+        });
     }
+}
 
-    visSkjerm();
+visSkjerm();
 </script>
 
 </body>
