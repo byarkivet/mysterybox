@@ -2,157 +2,70 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>404</title>
-
+<title>Arkiv</title>
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: black;
-  color: #bbb;
-  font-family: monospace;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
+    body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+    }
 
-.screen {
-  text-align: center;
-  max-width: 90%;
-}
+    input {
+        font-size: 18px;
+        padding: 8px;
+        border: 1px solid black;
+        outline: none;
+    }
 
-.hidden { display: none; }
-
-.glitch {
-  animation: glitch 0.12s infinite;
-}
-
-@keyframes glitch {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
-}
-
-input, button {
-  margin-top: 15px;
-  padding: 10px;
-  width: 80%;
-  max-width: 260px;
-  background: #000;
-  border: 1px solid #555;
-  color: #fff;
-  font-size: 1rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-.warning {
-  color: #888;
-  font-size: 0.9rem;
-  margin-top: 8px;
-  transition: color 0.3s;
-}
-
-.warning.danger {
-  color: #a00;
-}
-
-.error {
-  color: #a00;
-  margin-top: 10px;
-}
-
-.shake {
-  animation: shake 0.3s;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-
-.solution {
-  font-size: 2.2rem;
-  letter-spacing: 6px;
-  margin-top: 25px;
-  color: #eee;
-}
+    h1 {
+        font-weight: normal;
+    }
 </style>
 </head>
-
 <body>
 
-<!-- FALSK 404 -->
-<div class="screen glitch" id="fake404">
-  <h1>404</h1>
-  <p>Siden finnes ikke.</p>
-</div>
-
-<!-- SYSTEMFEIL -->
-<div class="screen hidden glitch" id="system">
-  <p>SYSTEMFEIL</p>
-  <p>Uautorisert tilgang oppdaget</p>
-  <p>Gjenoppretter…</p>
-</div>
-
-<!-- PASSORD -->
-<div class="screen hidden" id="lock">
-  <h1>TILGANG NEKTET</h1>
-  <p class="warning" id="warningText">
-    Pass på! Du har ikke veldig mange forsøk …
-  </p>
-  <p>Skriv inn passordet.</p>
-
-  <input type="password" id="password" placeholder="Passord">
-  <br>
-  <button onclick="check()">BEKREFT</button>
-
-  <div class="error" id="error"></div>
-</div>
+<div id="innhold"></div>
 
 <script>
-let attempts = 0;
+    const riktigPassord = "personlig";
 
-setTimeout(() => {
-  fake404.classList.add("hidden");
-  system.classList.remove("hidden");
-}, 2500);
+    function visSkjerm() {
+        if (localStorage.getItem("tilgang") === "ja") {
+            document.getElementById("innhold").innerHTML = `
+                <div>
+                    <h1>Akrivnotat</h1>
+                    <p>
+                    dokumentet ble feilarkivert. Arkivet gjelder ikke innhold, 
+                    men plassering. Dokumenter av personlig karakter kan ikke 
+                    behandles uten avstand. Videre materiale er frigitt. 
+                    - Arkivar X.
+                    </p>
+                </div>
+            `;
+        } else {
+            document.getElementById("innhold").innerHTML = `
+                <input type="password" id="passord" autofocus>
+            `;
 
-setTimeout(() => {
-  system.classList.add("hidden");
-  lock.classList.remove("hidden");
-  document.title = "Adgang sperret";
-}, 5000);
+            document.getElementById("passord").addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    if (this.value === riktigPassord) {
+                        localStorage.setItem("tilgang", "ja");
+                        location.reload();
+                    } else {
+                        this.value = "";
+                    }
+                }
+            });
+        }
+    }
 
-function check() {
-  const val = password.value.toLowerCase();
-  attempts++;
-  lock.classList.add("shake");
-  setTimeout(()=>lock.classList.remove("shake"),300);
-
-  if (val === "treplanke") {
-    lock.innerHTML = `
-      <h1>…</h1>
-      <p>Tilgang innvilges.</p>
-       <p>Løsningsord:</p>
-      <div class="solution">KJELLER</div>
-    `;
-    document.title = "Åpnet";
-  } else {
-    document.getElementById("warningText").classList.add("danger");
-    error.textContent =
-      attempts >= 3
-      ? "Systemet overvåker deg."
-      : "Feil passord.";
-  }
-}
+    visSkjerm();
 </script>
 
 </body>
